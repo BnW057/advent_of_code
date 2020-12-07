@@ -63,9 +63,8 @@ def main():
   csv_reader = csv.DictReader(csv_to_read)
   valid = 0
   legit = 0
-  index = 0
   eye_colors = ['amb','blu','brn','gry','grn','hzl','oth']
-  for index, row in enumerate(csv_reader):
+  for row in csv_reader:
     if (row['byr'] != 'False' and row['iyr'] != 'False' and row['eyr']
       != 'False' and row['hgt'] != 'False' and row['hcl'] != 'False' and
       row['ecl'] != 'False' and row['pid'] != 'False'):
@@ -75,9 +74,9 @@ def main():
         and len(row['iyr']) == 4 and 2010 <= int(row['iyr']) <= 2020
         and len(row['eyr']) == 4 and 2020 <= int(row['eyr']) <= 2030
         and (str(row['hgt']).__contains__("in")
-          and 59 <= int(row['hgt'][:2]) <= 76 or
-        (str(row['hgt']).__contains__("cm") and len(row['hgt']) == 5)
-          and 150 <= int(row['hgt'][:3]) <= 193)
+          and 59 <= int(re.search(r'\d+', row['hgt']).group()) <= 76 or
+        (str(row['hgt']).__contains__("cm")
+          and 150 <= int(re.search(r'\d+', row['hgt']).group()) <= 193))
         and (re.search(r'#[0-9a-f]{6}', row['hcl']) != None)
         and str(row['ecl']) in eye_colors and
         re.search(r'[0-9]{9}', row['pid']) != None):
