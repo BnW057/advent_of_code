@@ -3,7 +3,7 @@ import os
 import re
 
 __location__ = os.path.realpath(
-    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+  os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def main():
   #Part I: Normalize information
@@ -19,9 +19,6 @@ def main():
   csv_writer = csv.DictWriter(csv_to_write, fieldnames=fields)
   # Writes the headers for when rereading the values of the new file.
   csv_writer.writeheader()
-  # Reset position to the beginning of the file.
-  f.seek(0)
-  count = 0
   # Navigate lines in disorganized file.
   for count, line in enumerate(f):
     count += 1
@@ -65,16 +62,30 @@ def main():
   # Configure csv reader as a DictReader
   csv_reader = csv.DictReader(csv_to_read)
   valid = 0
+  legit = 0
   index = 0
+  eye_colors = ['amb','blu','brn','gry','grn','hzl','oth']
   for index, row in enumerate(csv_reader):
-    if index == 0: continue
     if (row['byr'] != 'False' and row['iyr'] != 'False' and row['eyr']
       != 'False' and row['hgt'] != 'False' and row['hcl'] != 'False' and
       row['ecl'] != 'False' and row['pid'] != 'False'):
-        valid += 1
-  print(count)
+      valid += 1
+      # Checking for values to actually comply with some limitations.
+      if (len(row['byr']) == 4 and 1920 <= int(row['byr']) <= 2002
+        and len(row['iyr']) == 4 and 2010 <= int(row['iyr']) <= 2020
+        and len(row['eyr']) == 4 and 2020 <= int(row['eyr']) <= 2030
+        and (str(row['hgt']).__contains__("in")
+          and 59 <= int(row['hgt'][:2]) <= 76 or
+        (str(row['hgt']).__contains__("cm") and len(row['hgt']) == 5)
+          and 150 <= int(row['hgt'][:3]) <= 193)
+        and (re.search(r'#[0-9a-f]{6}', row['hcl']) != None)
+        and str(row['ecl']) in eye_colors and
+        re.search(r'[0-9]{9}', row['pid']) != None):
+        legit += 1
   csv_to_read.close()
+  # Part one
   print("The number of valid passports is: " + str(valid))
+  print("With additional validation checks, the number is: " + str(legit))
 
 
 main()
