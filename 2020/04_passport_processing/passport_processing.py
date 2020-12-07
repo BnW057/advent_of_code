@@ -19,19 +19,16 @@ def main():
   csv_writer = csv.DictWriter(csv_to_write, fieldnames=fields)
   # Writes the headers for when rereading the values of the new file.
   csv_writer.writeheader()
-  # EOF is necessary or last item isn't read.
-  # First, go to end of file.
-  f.seek(0, os.SEEK_END)
-  # Save location of EOF.
-  eof = f.tell()
   # Reset position to the beginning of the file.
   f.seek(0)
+  count = 0
   # Navigate lines in disorganized file.
-  for line in f:
+  for count, line in enumerate(f):
+    count += 1
     # If we reach a lone newline, write collected values to csv file.
     # A lone newline separates cohesive items from each other.
     # EOF wraps up the write of the last element.
-    if line == '\n' or line == '':
+    if line == '\n' or line == b'':
       # Incomplete values written as False for an easily testable value.
       csv_writer.writerow(fields)
       # Reset dictionary for next item validation
@@ -56,9 +53,12 @@ def main():
       fields['pid'] = re.search(r'pid:(#|\w+|\d+)*', line).group()[4:]
     if line.__contains__('cid'):
       fields['cid'] = re.search(r'cid:(#|\w+|\d+)*', line).group()[4:]
+  # One last write for the item stored in buffer.
+  csv_writer.writerow(fields)
   # Close both files which are no longer needed.
   f.close()
   csv_to_write.close()
+
   # Part II: Process Normalized Data
   # Open csv file
   csv_to_read = open(os.path.join(__location__, 'data.csv'), "r")
@@ -72,6 +72,7 @@ def main():
       != 'False' and row['hgt'] != 'False' and row['hcl'] != 'False' and
       row['ecl'] != 'False' and row['pid'] != 'False'):
         valid += 1
+  print(count)
   csv_to_read.close()
   print("The number of valid passports is: " + str(valid))
 
