@@ -5,3 +5,7 @@ For this problem, I'm supposed to make sure that some unordered groupings of dat
 ## Strategy
 
 Initially due to the structure of the data in the file, I was simply going to make a string search with some booleans for the categories, since some of the groups have multiple lines for a single cohesive item. This might prove inconvenient if in the second part I have to filter fields based on some condition that requires reading their values. Regardless, a singular new line separates items from each other, so if a line only contains a new line, it is a good place to stop looking for matches. I'll go with key value pairs that are updated as information is found, but if it doesn't match a validation check, it does not count as a valid passport, and the values are reset for the next test. I'll probably have to use regular expressions.
+
+## Second part
+
+I already solved the second half, but the second part was just a matter of adding validation checks to the data that I had already extracted into the manageable format of csv. It wasn't too much effort after that.
