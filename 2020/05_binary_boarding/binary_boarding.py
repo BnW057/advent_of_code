@@ -52,9 +52,10 @@ def main():
     for i in range(len(seats)):
       for j in range(len(seats[i])):
         if seats[i][j] == True:
+          # The provided equation for seatID calculation.
           seatID = i * 8 + j
           if seatID > highest:
             highest = seatID
-    print(highest)
+    print("The highest seatID value is %d"%(highest))
 
 main()
