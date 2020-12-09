@@ -1,5 +1,4 @@
 from array import *
-from io import UnsupportedOperation
 import os
 
 __location__ = os.path.realpath(
@@ -47,8 +46,9 @@ def main():
       seats[row][col] = True
 
     # Find highest seatID
-
     highest = 0
+    myID = 0
+    three_seat_config = [0, 0, 0]
     for i in range(len(seats)):
       for j in range(len(seats[i])):
         if seats[i][j] == True:
@@ -56,6 +56,13 @@ def main():
           seatID = i * 8 + j
           if seatID > highest:
             highest = seatID
+        three_seat_config.append(seats[i][j])
+        three_seat_config.pop(0)
+        if three_seat_config == [True, False, True]:
+          myID = i * 8 + (j-1)
+
+
     print("The highest seatID value is %d"%(highest))
+    print("My seat is", myID)
 
 main()
