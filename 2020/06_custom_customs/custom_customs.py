@@ -32,9 +32,8 @@ def main():
           if (temp_list.count(j) == group_member_total and
           not j in shared_answers):
             shared_answers.append(j)
-        if shared_answers != []:
-          for a in shared_answers:
-            corrected_totals.append(a)
+        for a in shared_answers:
+          corrected_totals.append(a)
         group_member_total = 0
         temp_list = []
         continue
@@ -59,9 +58,8 @@ def main():
         if (temp_list.count(j) == group_member_total and
         not j in shared_answers):
           shared_answers.append(j)
-      if shared_answers != []:
-        for a in shared_answers:
-            corrected_totals.append(a)
+      for a in shared_answers:
+          corrected_totals.append(a)
 
   print("The total of answers for the first part is", len(answer_list))
   print("The total of answers for the second part is", len(corrected_totals))
